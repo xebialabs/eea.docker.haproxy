@@ -1,7 +1,7 @@
 ## HAProxy Docker image
 
 This image is generic, thus you can obviously re-use it within
-your non-related EEA projects.
+your non-related projects.
 
  - Debian: **Jessie**
  - HAProxy: **1.8**
@@ -9,27 +9,27 @@ your non-related EEA projects.
 
 ### Supported tags and respective Dockerfile links
 
-  - `:latest` [*Dockerfile*](https://github.com/eea/eea.docker.haproxy/blob/master/haproxy/Dockerfile) - Debian: **Jessie**, HAProxy: **1.8**
+  - `:latest` [*Dockerfile*](https://github.com/xebialabs/eea.docker.haproxy/blob/master/haproxy/Dockerfile) - Debian: **Jessie**, HAProxy: **1.8**
 
 ### Stable and immutable tags
 
-  - `:1.8-1.4` [*Dockerfile*](https://github.com/eea/eea.docker.haproxy/tree/1.8-1.4/haproxy/Dockerfile) - HAProxy: **1.8** Release: **1.3**
+  - `:1.8-1.4` [*Dockerfile*](https://github.com/xebialabs/eea.docker.haproxy/tree/1.8-1.4/haproxy/Dockerfile) - HAProxy: **1.8** Release: **1.3**
 
-See [older versions](https://github.com/eea/eea.docker.haproxy/releases)
+See [older versions](https://github.com/xebialabs/eea.docker.haproxy/releases)
 
 
 ### Changes
 
- - [CHANGELOG.md](https://github.com/eea/eea.docker.haproxy/blob/master/CHANGELOG.md)
+ - [CHANGELOG.md](https://github.com/xebialabs/eea.docker.haproxy/blob/master/CHANGELOG.md)
 
 ### Base docker image
 
- - [hub.docker.com](https://hub.docker.com/r/eeacms/haproxy)
+ - [hub.docker.com](https://hub.docker.com/r/xebialabsunsupported/haproxy)
 
 
 ### Source code
 
-  - [github.com](http://github.com/eea/eea.docker.haproxy)
+  - [github.com](http://github.com/xebialabs/eea.docker.haproxy)
 
 
 ### Installation
@@ -42,12 +42,12 @@ See [older versions](https://github.com/eea/eea.docker.haproxy/releases)
 
 ### Run with Docker Compose
 
-Here is a basic example of a `docker-compose.yml` file using the `eeacms/haproxy` docker image:
+Here is a basic example of a `docker-compose.yml` file using the `xebialabsunsupported/haproxy` docker image:
 
     version: "2"
     services:
       haproxy:
-        image: eeacms/haproxy
+        image: xebialabsunsupported/haproxy
         depends_on:
         - webapp
         ports:
@@ -59,7 +59,7 @@ Here is a basic example of a `docker-compose.yml` file using the `eeacms/haproxy
           LOG_LEVEL: "info"
 
       webapp:
-        image: eeacms/hello
+        image: xebialabsunsupported/hello
 
 
 The application can be scaled to use more server instances, with `docker-compose scale`:
@@ -79,7 +79,7 @@ minimum possible `DNS_TTL`.
 
 ### Run with backends specified as environment variable
 
-    $ docker run --env BACKENDS="192.168.1.5:80 192.168.1.6:80" eeacms/haproxy
+    $ docker run --env BACKENDS="192.168.1.5:80 192.168.1.6:80" xebialabsunsupported/haproxy
 
 Using the `BACKENDS` variable is a way to quick-start the container.
 The servers are written as `server_ip:server_listening_port`,
@@ -91,12 +91,12 @@ If there are multiple DNS records for one or more of your `BACKENDS` (e.g. when 
 you can use `DNS_ENABLED` environment variable. This way, haproxy will load-balance
 all of your backends instead of only the first entry found:
 
-  $ docker run --link=webapp -e BACKENDS="webapp" -e DNS_ENABLED=true eeacms/haproxy
+  $ docker run --link=webapp -e BACKENDS="webapp" -e DNS_ENABLED=true xebialabsunsupported/haproxy
 
 
 ### Use a custom configuration file mounted as a volume
 
-    $ docker run -v conf.d/haproxy.cfg:/etc/haproxy/haproxy.cfg eeacms/haproxy:latest
+    $ docker run -v conf.d/haproxy.cfg:/etc/haproxy/haproxy.cfg xebialabsunsupported/haproxy:latest
 
 
 If you edit `haproxy.cfg` you can reload it without having to restart the container:
@@ -108,7 +108,7 @@ If you edit `haproxy.cfg` you can reload it without having to restart the contai
 
 Additionally, you can supply your own static `haproxy.cfg` file by extending the image
 
-    FROM eeacms/haproxy:latest
+    FROM xebialabsunsupported/haproxy:latest
     COPY conf.d/haproxy.cfg /etc/haproxy/haproxy.cfg
 
     RUN apt-get install...
@@ -132,7 +132,7 @@ either when running the container or in a `docker-compose.yml` file.
   * `FRONTEND_MODE` Frontend mode - default `http` or `BACKENDS_MODE` if declared
   * `PROXY_PROTOCOL_ENABLED` The option to enable or disable accepting proxy protocol (`true` stands for enabled, `false` or anything else for disabled) - default `false`
   * `COOKIES_ENABLED` The option to enable or disable cookie-based sessions (`true` stands for enabled, `false` or anything else for disabled) - default `false`
-  * `COOKIES_PARAMS` Will be added on cookie declaration - example `indirect nocache maxidle 30m maxlife 8h` or `maxlife 24h` - documentation https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-cookie
+  * `COOKIES_PARAMS` Will be added on cookie declaration, cookie name also can be specified here - example `SRV_ID insert indirect nocache maxidle 30m maxlife 8h` or `maxlife 24h` - documentation https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-cookie
   * `BACKEND_NAME` The label of the backend - default `http-backend`
   * `BACKENDS` The list of `server_ip:server_listening_port` to be load-balanced by HAProxy, separated by space - by default it is not set
   * `BACKENDS_PORT` Port to use when auto-discovering backends, or when `BACKENDS` are specified without port - by default `80`
@@ -160,11 +160,11 @@ By default the logs from haproxy are present in the docker log, by using the rsy
 
 You can change the logging level by providing the `LOG_LEVEL` environment variable:
 
-    docker run -e LOG_LEVEL=info  ... eeacms/haproxy
+    docker run -e LOG_LEVEL=info  ... xebialabsunsupported/haproxy
 
 You can override the log output by providing the `LOGGING` environment variable:
 
-    docker run -e LOGGING=logs.example.com:5005 ... eeacms/haproxy
+    docker run -e LOGGING=logs.example.com:5005 ... xebialabsunsupported/haproxy
 
 Now make sure that `logs.example.com` listen on UDP port `5005`
 
@@ -179,7 +179,4 @@ General Public License as published by the Free Software Foundation;
 either version 2 of the License, or (at your option) any later
 version.
 
-
-## Funding
-
-[European Environment Agency (EU)](http://eea.europa.eu)
+Forked from https://github.com/eea/eea.docker.haproxy

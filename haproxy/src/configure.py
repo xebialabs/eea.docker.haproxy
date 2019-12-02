@@ -15,7 +15,7 @@ BACKEND_NAME = os.environ.get('BACKEND_NAME', 'http-backend')
 BALANCE = os.environ.get('BALANCE', 'roundrobin')
 SERVICE_NAMES = os.environ.get('SERVICE_NAMES', '')
 COOKIES_ENABLED = (os.environ.get('COOKIES_ENABLED', 'false').lower() == "true")
-COOKIES_PARAMS = os.environ.get('COOKIES_PARAMS','')
+COOKIES_PARAMS = os.environ.get('COOKIES_PARAMS','SRV_ID insert')
 PROXY_PROTOCOL_ENABLED = (os.environ.get('PROXY_PROTOCOL_ENABLED', 'false').lower() == "true")
 STATS_PORT = os.environ.get('STATS_PORT', '1936')
 STATS_AUTH = os.environ.get('STATS_AUTH', 'admin:admin')
@@ -61,7 +61,7 @@ if COOKIES_ENABLED:
     mode $mode
     balance $balance
     default-server inter $inter fastinter $fastinter downinter $downinter fall $fall rise $rise
-    cookie SRV_ID insert $cookies_params
+    cookie $cookies_params
 """)
     cookies = "cookie \\\"@@value@@\\\""
 else:
@@ -73,7 +73,7 @@ else:
     mode $mode
     balance $balance
     default-server inter $inter fastinter $fastinter downinter $downinter fall $fall rise $rise
-    cookie SRV_ID prefix $cookies_params
+    cookie $cookies_params
 """)
     cookies = ""
 
